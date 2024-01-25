@@ -1,2 +1,2 @@
 # hillel-php-advanced
-Nice repo for fun and productive learn :)
+Nice repo for fun and productive learning :)

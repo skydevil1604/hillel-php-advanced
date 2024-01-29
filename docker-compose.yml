@@ -1,0 +1,43 @@
+version: "3.8"
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  web:
+    container_name: "${APP_NAME}-web"
+    build:
+      context: .docker/php
+    restart: always
+    ports:
+      - "8081:80"
+    volumes:
+      - .:/var/www/html
+    networks:
+      - backend
+  mysql_db:
+    container_name: "${APP_NAME}-mysql"
+    image: "mysql:8"
+    restart: always
+    ports:
+      - "33061:3306"
+    volumes:
+      - "mysql_data:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: php_advanced
+    networks:
+      - backend
+  adminer:
+    container_name: "${APP_NAME}-adminer"
+    image: "adminer"
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - backend

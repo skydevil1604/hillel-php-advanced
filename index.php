@@ -1,44 +1,71 @@
 <?php
 
-// Traits init
+class User
+{
+    private string $name;
+    private int $age;
+    private string $email;
 
-trait Trait1 {
-    public function test(): int
+    /**
+     * @param $method
+     * @param $arguments
+     * @return mixed
+     * @throws CustomException
+     */
+    public function __call($method, $arguments)
     {
-        return 1;
+        if (method_exists($this, $method)) {
+            return $this->$method(...$arguments);
+        } else {
+            throw new CustomException("Method $method does not exist in class");
+        }
+    }
+
+    public function setName($name): User
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function setAge($age): User
+    {
+        $this->age = $age;
+        return $this;
+    }
+
+    public function setEmail($email): User
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getAll(): array
+    {
+        return [
+            'name' => $this->name,
+            'age' => $this->age,
+            'email' => $this->email,
+        ];
     }
 }
 
-trait Trait2 {
-    public function test(): int
-    {
-        return 2;
-    }
+class CustomException extends Exception {}
+
+// Examples
+
+try {
+    $user = new User();
+
+    $user->setName('John')->setAge(25)->setEmail('test@gmail.com');
+
+    $userInfo = $user->getAll();
+    print_r($userInfo);
+
+    $user->setUsername('john_doe'); // call not exists method
+} catch (CustomException $e) {
+    echo "Caught exception: " . $e->getMessage();
 }
 
-trait Trait3 {
-    public function test(): int
-    {
-        return 3;
-    }
-}
+// Result
 
-// use traits in Class
-
-class TestClass {
-    use Trait1, Trait2, Trait3 {
-        Trait1::test insteadof Trait2, Trait3; // use method from Trait1 as $this->test()
-        Trait2::test as testTrait2; // rename methods to avoid conflicts
-        Trait3::test as testTrait3;
-    }
-
-    public function getSum(): int
-    {
-        return $this->test() + $this->testTrait2() + $this->testTrait3();
-    }
-}
-
-// Example
-
-$testObject = new TestClass();
-echo $testObject->getSum();
+// Array ( [name] => John [age] => 25 [email] => test@gmail.com ) Caught exception: Method setUsername does not exist in class

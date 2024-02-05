@@ -1,101 +1,71 @@
 <?php
 
-class RGBColor
+class User
 {
-    private int $red;
-    private int $green;
-    private int $blue;
+    private string $name;
+    private int $age;
+    private string $email;
 
-    public function __construct(int $red, int $green, int $blue)
+    /**
+     * @param $method
+     * @param $arguments
+     * @return mixed
+     * @throws CustomException
+     */
+    public function __call($method, $arguments)
     {
-        $this->setRed($red);
-        $this->setGreen($green);
-        $this->setBlue($blue);
-    }
-
-    public function getRed(): int
-    {
-        return $this->red;
-    }
-
-    public function setRed(int $red): void
-    {
-        $this->validateColorValue($red);
-        $this->red = $red;
-    }
-
-    public function getGreen(): int
-    {
-        return $this->green;
-    }
-
-    public function setGreen(int $green): void
-    {
-        $this->validateColorValue($green);
-        $this->green = $green;
-    }
-
-    public function getBlue(): int
-    {
-        return $this->blue;
-    }
-
-    public function setBlue(int $blue): void
-    {
-        $this->validateColorValue($blue);
-        $this->blue = $blue;
-    }
-
-    private function validateColorValue(int $value): void
-    {
-        if ($value < 0 || $value > 255) {
-            throw new InvalidArgumentException("Invalid color value. Range of 0 to 255.");
+        if (method_exists($this, $method)) {
+            return $this->$method(...$arguments);
+        } else {
+            throw new CustomException("Method $method does not exist in class");
         }
     }
 
-    public function equals(RGBColor $newColor): bool
+    public function setName($name): User
     {
-        return $this->red === $newColor->getRed() &&
-            $this->green === $newColor->getGreen() &&
-            $this->blue === $newColor->getBlue();
+        $this->name = $name;
+        return $this;
     }
 
-    public static function random(): RGBColor
+    public function setAge($age): User
     {
-        $red = random_int(0, 255);
-        $green = random_int(0, 255);
-        $blue = random_int(0, 255);
-
-        return new self($red, $green, $blue);
+        $this->age = $age;
+        return $this;
     }
 
-    public function mix(RGBColor $newColor): RGBColor
+    public function setEmail($email): User
     {
-        $mixedRed = ($this->red + $newColor->getRed()) / 2;
-        $mixedGreen = ($this->green + $newColor->getGreen()) / 2;
-        $mixedBlue = ($this->blue + $newColor->getBlue()) / 2;
+        $this->email = $email;
+        return $this;
+    }
 
-        return new self($mixedRed, $mixedGreen, $mixedBlue);
+    public function getAll(): array
+    {
+        return [
+            'name' => $this->name,
+            'age' => $this->age,
+            'email' => $this->email,
+        ];
     }
 }
 
-// Examples:
-$color = new RGBColor(250, 250, 250);
-echo '<pre>'; print_r($color); echo '</pre>';
+class CustomException extends Exception {}
 
-$randomColor = $color->random();
-echo '<pre>'; print_r($randomColor); echo '</pre>';
+// Examples
 
-$mixedColor = $color->mix(new RGBColor(100, 100, 100));
-echo '<pre>'; print_r($mixedColor); echo '</pre>';
-echo '<pre>'; print_r($mixedColor->getRed()); echo '</pre>';
-echo '<pre>'; print_r($mixedColor->getGreen()); echo '</pre>';
-echo '<pre>'; print_r($mixedColor->getBlue()); echo '</pre>';
+try {
+    $user = new User();
 
-$isEqual = $color->equals($randomColor);
-if ($isEqual) {
-    echo 'COLORS equals';
+    $user->setName('John')->setAge(25)->setEmail('test@gmail.com');
+
+    $userInfo = $user->getAll();
+    print_r($userInfo);
+
+    $user->setUsername('john_doe'); // call not exists method
+} catch (CustomException $e) {
+    echo "Caught exception: " . $e->getMessage();
 }
-else {
-    echo 'COLORS not equals';
-}
+
+// Result
+
+// Array ( [name] => John [age] => 25 [email] => test@gmail.com ) Caught exception: Method setUsername does not exist in class

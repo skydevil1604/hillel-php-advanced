@@ -1,16 +1,16 @@
 CREATE TABLE customers (
-                           id INT PRIMARY KEY,
+                           id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
                            name VARCHAR(255) NOT NULL,
                            phone VARCHAR(255)
 );
 
 CREATE TABLE parks (
-                       id INT PRIMARY KEY,
+                       id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
                        address VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE cars (
-                      id INT PRIMARY KEY,
+                      id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
                       park_id INT NOT NULL,
                       model VARCHAR(255) NOT NULL,
                       price FLOAT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE cars (
 );
 
 CREATE TABLE drivers (
-                         id INT PRIMARY KEY,
+                         id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
                          car_id INT NOT NULL,
                          name VARCHAR(255) NOT NULL,
                          phone VARCHAR(255),
@@ -26,7 +26,7 @@ CREATE TABLE drivers (
 );
 
 CREATE TABLE orders (
-                        id INT PRIMARY KEY,
+                        id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
                         driver_id INT NOT NULL,
                         customer_id INT NOT NULL,
                         start TEXT NOT NULL,

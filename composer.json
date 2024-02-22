@@ -1,0 +1,16 @@
+{
+  "name": "root/html",
+  "autoload": {
+    "psr-4": {
+      "Core\\": "core/",
+      "App\\": "app/"
+    },
+    "files": [
+      "routes/api.php",
+      "core/helpers.php"
+    ]
+  },
+  "require": {
+    "larapack/dd": "^1.1"
+  }
+}

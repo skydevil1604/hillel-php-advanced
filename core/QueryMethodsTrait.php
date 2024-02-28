@@ -50,6 +50,24 @@ trait QueryMethodsTrait
         return static::find(db()->lastInsertId());
     }
 
+    public function update(array $fields): static
+    {
+        self::setTableName();
+
+        $query = "UPDATE " . static::$tableName . " SET " . $this->updatePlaceholders(array_keys($fields)) . " WHERE id=:id";
+        $query = db()->prepare($query);
+
+        $fields['id'] = $this->id;
+        $query->execute($fields);
+
+        return static::find($this->id);
+    }
+
+    protected function updatePlaceholders(array $keys): string
+    {
+
+    }
+
     static protected function prepareQueryParams(array $fields): array
     {
         $keys = array_keys($fields);

@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS bookings
     comment    TEXT,
     status     VARCHAR(255) DEFAULT 'pending',
     created_at DATETIME DEFAULT NOW(),
+    updated_at DATETIME DEFAULT NOW(),
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

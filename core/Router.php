@@ -50,14 +50,23 @@ class Router
                     if ($controllerInstance->before($methodName, $params)) {
                         $response = $this->callControllerAction($controller, $params);
                         $controllerInstance->after($methodName);
+
+                        if ($response) {
+                            return \Core\json_response($response['code'], [
+                                'data' => $response['body'],
+                                'errors' => $response['errors']
+                            ]);
+                        }
                     }
                 }
             }
         }
 
-        return \Core\json_response($response['code'], [
-            'data' => $response['body'],
-            'errors' => $response['errors']
+        return \Core\json_response(500, [
+            'data' => [],
+            'errors' => [
+                'message' => 'Empty response'
+            ]
         ]);
     }
 

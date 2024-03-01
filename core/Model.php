@@ -12,7 +12,7 @@ abstract class Model
     static public function setTableName(): string
     {
         // Отримуємо ім'я класу
-        $className = self::class;
+        $className = basename(str_replace('\\', '/', static::class));
 
         // Розбиваємо ім'я класу на окремі слова
         $words = preg_split('/(?=[A-Z])/', $className, -1, PREG_SPLIT_NO_EMPTY);

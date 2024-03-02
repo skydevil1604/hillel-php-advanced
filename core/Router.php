@@ -48,6 +48,10 @@ class Router
                     $controllerInstance = new $className();
 
                     if ($controllerInstance->before($methodName, $params)) {
+                        if (count($params) > 1) {
+                            $params = [intval($params[1])];
+                        }
+
                         $response = $this->callControllerAction($controller, $params);
                         $controllerInstance->after($methodName);
 

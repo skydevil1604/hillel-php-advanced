@@ -4,7 +4,7 @@ namespace App\Validators\Auth;
 
 class AuthValidator extends Base
 {
-    const DEFAULT_MESSAGE = "Email or password is incorrect";
+    const string DEFAULT_MESSAGE = "Email or password is incorrect";
 
     protected array $rules = [
         'email' => '/^[a-zA-Z0-9.!#$%&\'*+\/\?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i',
@@ -16,9 +16,9 @@ class AuthValidator extends Base
         'password' => self::DEFAULT_MESSAGE
     ];
 
-    public function validate(array $fields = []): bool
+    public function validate(int $id = null, array $fields = []): bool
     {
-        if (!parent::validate($fields)) {
+        if (!parent::validate($id, $fields)) {
             return false;
         }
 

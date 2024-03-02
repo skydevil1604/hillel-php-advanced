@@ -6,7 +6,7 @@ abstract class BaseValidator
 {
     protected array $rules = [], $errors = [], $skip = [];
 
-    public function validate(array $fields = []): bool
+    public function validate(int $id = null, array $fields = []): bool
     {
         if (empty($fields)) {
             $this->setError('data', 'Got empty data');

@@ -32,7 +32,7 @@ class AuthController extends Controller
         $data = requestBody();
         $validator = new AuthValidator();
 
-        if ($validator->validate($data)) {
+        if ($validator->validate(fields: $data)) {
             $user = User::findBy('email', $data['email']);
             if (password_verify($data['password'], $user->password)) {
                 $expiration = time() + 3600;

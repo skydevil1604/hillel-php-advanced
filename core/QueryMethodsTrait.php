@@ -63,9 +63,26 @@ trait QueryMethodsTrait
         return static::find($this->id);
     }
 
+    static public function destroy(int $id): bool
+    {
+        self::setTableName();
+
+        $query = db()->prepare("DELETE FROM " . static::$tableName . " WHERE id = :id");
+        $query->bindParam('id', $id);
+
+        return $query->execute();
+    }
+
     protected function updatePlaceholders(array $keys): string
     {
+        $string = '';
+        $lastKey = array_key_last($keys);
 
+        foreach($keys as $index => $key) {
+            $string .= "$key = :$key" . ($index === $lastKey ? '' : ', ');
+        }
+
+        return $string;
     }
 
     static protected function prepareQueryParams(array $fields): array

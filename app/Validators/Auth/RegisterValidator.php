@@ -14,9 +14,9 @@ class RegisterValidator extends Base
         'password' => 'Password is incorrect. Minimum length 8 symbols'
     ];
 
-    public function validate(array $fields = []): bool
+    public function validate(int $id = null,array $fields = []): bool
     {
-        if (!parent::validate($fields)) {
+        if (!parent::validate($id, $fields)) {
             return false;
         }
 

@@ -5,7 +5,6 @@ namespace App\Validators\Bookings;
 use App\Models\Booking;
 use App\Validators\BaseValidator;
 use PDO;
-use function Core\authId;
 use function Core\db;
 
 class CreateBookingValidator extends BaseValidator

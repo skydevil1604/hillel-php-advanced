@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS bookings
 (
     id            INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     user_id       INT UNSIGNED NOT NULL,
+    master_id     INT UNSIGNED NOT NULL,
     customer_name VARCHAR(255) NOT NULL,
     vehicle       VARCHAR(255) NOT NULL,
     type          INT NOT NULL,
@@ -11,5 +12,6 @@ CREATE TABLE IF NOT EXISTS bookings
     created_at    DATETIME DEFAULT NOW(),
     updated_at    DATETIME DEFAULT NOW(),
 
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (master_id) REFERENCES masters(id) ON DELETE RESTRICT
 );

@@ -15,7 +15,7 @@ class AuthController extends Controller
         $data = requestBody();
         $validator = new RegisterValidator();
 
-        if ($validator->validate($data)) {
+        if ($validator->validate(fields: $data)) {
             $user = User::create([
                 ...$data,
                 'password' => password_hash($data['password'], PASSWORD_BCRYPT)
